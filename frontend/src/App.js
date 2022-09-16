@@ -7,6 +7,16 @@ import {
 import LandingPage from './pages/landing/LandingPage';
 import Login from './pages/authentication/Login';
 import Register from './pages/authentication/Register';
+import Onboarding from './pages/onboarding/Onboarding';
+
+const charityOnboardingQuestions = [
+  {name: "Tell our volunteers a bit about your organisation", type: "full", required: true, placeholder: ""},
+  {name: "What tags would you associate with your organisation? This will help us connect you with volunteers that most fit your organisation.", type: "tags", required: true}
+];
+
+const userOnboardingQuestions = [
+  {name: "Tell us a little more about yourself", type: "full", required: false, placeholder: "Your bio"}
+]
 
 function App() {
   return (
@@ -15,6 +25,8 @@ function App() {
         <Route index element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/onboarding/user" element={<Onboarding type="user" questions={ userOnboardingQuestions } />} />
+        <Route path="/onboarding/charity" element={<Onboarding type="charity" questions={ charityOnboardingQuestions } />} />
       </Routes>
     </BrowserRouter>
   );

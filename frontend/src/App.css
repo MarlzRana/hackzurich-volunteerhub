@@ -10,3 +10,19 @@ body {
   padding: 0;
   font-family: Helvetica;
 }
+
+input[type="submit"],
+button {
+    border: none;
+    padding: 6px 20px;
+    background: #333;
+    color: #efefef;
+    font-size: 15px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background: #222;
+}
