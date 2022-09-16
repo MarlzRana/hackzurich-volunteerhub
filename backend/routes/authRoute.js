@@ -14,7 +14,7 @@ module.exports = function (app, userCollection) {
         (err, userDoc) => {
           if (err) return next(err);
           if (userDoc)
-            return res.json({ err: true, message: "user already exists" });
+            return res.json({ success: false, message: "user already exists" });
           userCollection.insertOne(
             {
               username: req.body.username,
@@ -27,26 +27,34 @@ module.exports = function (app, userCollection) {
         }
       );
     },
-    passport.authenticate("local", { failureRedirect: "/" }),
+    passport.authenticate("local", { failureRedirect: "/failureLogin" }),
     (req, res, next) => {
-      return res.json({ message: "successfully registered" });
+      return res.json({ success: true, message: "successfully registered" });
     }
   );
 
   app
     .route("/auth/login")
     .post(
-      passport.authenticate("local", { failureRedirect: "/" }),
+      passport.authenticate("local", { failureRedirect: "/failureLogin" }),
       (req, res) => {
         res.json({
+          success: true,
           message: "successfully logged in",
         });
       }
     );
 
+  app.route("failureLogin").get((req, res) => {
+    res.json({ success: false, message: "unsuccessful login" });
+  });
+
   app.route("/auth/logout").get((req, res) => {
     req.logout();
-    res.redirect("/");
+    res.json({
+      success: true,
+      message: "successful logout",
+    });
   });
 
   app.route("/auth/isAuthenicated").get((req, res) => {
