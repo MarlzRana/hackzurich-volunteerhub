@@ -9,8 +9,8 @@ const Header = () => {
             </div>
             <div className="landing-nav">
                 <p>An Organisation?</p>
-                <Link to="/">Sign Up</Link>
-                <Link to="/">Login</Link>
+                <Link to="/register">Sign Up</Link>
+                <Link to="/login">Login</Link>
             </div>
         </div>
     );
