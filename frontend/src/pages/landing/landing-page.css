@@ -1,0 +1,47 @@
+.landing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #efefef;
+    padding: 0 50px;
+    height: 80px;
+}
+
+.landing-nav {
+    display: flex;
+    align-items: center;
+}
+
+.landing-nav a {
+    margin-left: 15px;
+}
+
+.landing-hero {
+    height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+}
+
+.landing-hero-left,
+.landing-hero-right {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px;
+}
+
+.landing-hero-left h2 {
+    font-size: 60px;
+    margin-bottom: 0;
+}
+
+.landing-hero-left p {
+    font-size: 25px;
+    margin-top: 25px;
+}
+
+.landing-hero-right > img {
+    width: 350px;
+}
