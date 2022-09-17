@@ -13,7 +13,10 @@ const myDB = require("./connection");
 const defaultRoute = require("./routes/defaultRoute.js");
 const authRoute = require("./routes/authRoute.js");
 const volunteerRoute = require("./routes/volunteerRoute.js");
+const organisationRoute = require("./routes/organisationRoute.js");
 const authSetup = require("./authSetup.js");
+const { mongo } = require("mongoose");
+const { MongoTopologyClosedError } = require("mongodb");
 
 // Creating main app object
 const app = express();
@@ -69,25 +72,30 @@ myDB(async (mongoose) => {
       type: String,
       required: true,
     },
-    bio: String,
-    tags: [String],
-    socialLinks: socialLinksSchema,
-    location: String,
+    associatedInfo: mongoose.Schema.Types.Mixed,
   });
   const User = mongoose.model("users", userSchema);
 
   //Auth config
-  function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
+  function ensureAuthenticatedVolunteer(req, res, next) {
+    if (req.isAuthenticated() && req.user.type === "volunteer") {
       return next();
     }
-    res.redirect("/");
+    res.redirect("/auth/lackPermissions");
+  }
+
+  function ensureAuthenticatedOrganisation(req, res, next) {
+    if (req.isAuthenticated() && req.user.type === "organisation") {
+      return next();
+    }
+    res.redirect("/auth/lackPermissions");
   }
 
   //Routes
   defaultRoute(app);
   authRoute(app, { User });
-  volunteerRoute(app, ensureAuthenticated, { User });
+  volunteerRoute(app, ensureAuthenticatedVolunteer, { User });
+  organisationRoute(app, ensureAuthenticatedOrganisation, { User });
   authSetup(app, { User });
 
   // 404 Not Found "Middleware"

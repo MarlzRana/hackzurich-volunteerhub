@@ -1,13 +1,29 @@
 module.exports = function (app, ensureIsAuthenticated, { User }) {
-  app.route("/volunteer/allInfo").get(async (req, res) => {
-    const userClone = Object.assign({}, req.user._doc);
-    delete userClone._id;
-    delete userClone.__v;
-    return res.json(userClone);
-  });
+  app
+    .route("/organisation/name")
+    .get(ensureIsAuthenticated, async (req, res) => {
+      return res.json({
+        name: req.user.associatedInfo.name,
+      });
+    })
+    .post(ensureIsAuthenticated, async (req, res) => {
+      req.user.associatedInfo.name = req.body.name;
+      req.user.markModified("associatedInfo");
+      try {
+        await req.user.save();
+        return res.json({
+          success: true,
+        });
+      } catch (e) {
+        console.log(e);
+        return res.json({
+          success: false,
+        });
+      }
+    });
 
   app
-    .route("/volunteer/bio")
+    .route("/organisation/bio")
     .get(ensureIsAuthenticated, async (req, res) => {
       return res.json({
         bio: req.user.associatedInfo.bio,
@@ -22,6 +38,7 @@ module.exports = function (app, ensureIsAuthenticated, { User }) {
           success: true,
         });
       } catch (e) {
+        console.log(e);
         return res.json({
           success: false,
         });
@@ -29,7 +46,7 @@ module.exports = function (app, ensureIsAuthenticated, { User }) {
     });
 
   app
-    .route("/volunteer/tags")
+    .route("/organisation/tags")
     .get(ensureIsAuthenticated, async (req, res) => {
       return res.json({
         tags: req.user.associatedInfo.tags,
@@ -52,27 +69,7 @@ module.exports = function (app, ensureIsAuthenticated, { User }) {
     });
 
   app
-    .route("/volunteer/socialLinks")
-    .get(ensureIsAuthenticated, async (req, res) => {
-      return res.json(req.user.associatedInfo.socialLinks);
-    })
-    .post(ensureIsAuthenticated, async (req, res) => {
-      req.user.associatedInfo.socialLinks = req.body;
-      req.user.markModified("associatedInfo");
-      try {
-        await req.user.save();
-        return res.json({
-          success: true,
-        });
-      } catch (e) {
-        return res.json({
-          success: false,
-        });
-      }
-    });
-
-  app
-    .route("/volunteer/location")
+    .route("/organisation/location")
     .get(ensureIsAuthenticated, async (req, res) => {
       return res.json({
         location: req.user.associatedInfo.location,
@@ -87,6 +84,7 @@ module.exports = function (app, ensureIsAuthenticated, { User }) {
           success: true,
         });
       } catch (e) {
+        console.log(e);
         return res.json({
           success: false,
         });

@@ -20,6 +20,7 @@ module.exports = function (app, { User }) {
           username: req.body.username,
           password: bcrypt.hashSync(req.body.password, 12),
           type: req.body.type,
+          associatedInfo: { bio: "" },
         });
         await newUser.save();
         next(null, newUser._id);
@@ -47,6 +48,14 @@ module.exports = function (app, { User }) {
 
   app.route("/auth/failureLogin").get((req, res) => {
     res.json({ success: false, message: "unsuccessful login" });
+  });
+
+  app.route("/auth/lackPermissions").get((req, res) => {
+    res.json({
+      success: false,
+      message:
+        "you lack permissions (most likely you tried to access an organisation endpoint as a volunteer or vice versa)",
+    });
   });
 
   app.route("/auth/logout").get((req, res) => {
