@@ -8,7 +8,9 @@ import LandingPage from './pages/landing/LandingPage';
 import Login from './pages/authentication/Login';
 import Register from './pages/authentication/Register';
 import Onboarding from './pages/onboarding/Onboarding';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { isAuthenticated } from './services/auth.service';
+import Dashboard from './pages/dashboard/Dashboard';
 
 const charityOnboardingQuestions = [
   {name: "Tell our volunteers a bit about your organisation", type: "full", required: true, placeholder: ""},
@@ -21,6 +23,13 @@ const userOnboardingQuestions = [
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    isAuthenticated()
+    .then((res) => {
+      if (res.data.isAuthenticated) setIsLoggedIn(true);
+    });
+  }, []);
   
   return (
     <BrowserRouter>
@@ -30,6 +39,7 @@ function App() {
         <Route path="/register" element={<Register isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/onboarding/user" element={<Onboarding type="user" questions={ userOnboardingQuestions } isLoggedIn={isLoggedIn} />} />
         <Route path="/onboarding/charity" element={<Onboarding type="charity" questions={ charityOnboardingQuestions } isLoggedIn={isLoggedIn} />} />
+        <Route path="/dashboard" element={<Dashboard isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
       </Routes>
     </BrowserRouter>
   );

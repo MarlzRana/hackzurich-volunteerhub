@@ -1,9 +1,15 @@
 import "./authentication-page.css";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { register, isAuthenticated } from "../../services/auth.service";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { register } from "../../services/auth.service";
 
 const Register = ({ isLoggedIn, setIsLoggedIn }) => {
+    let navigate = useNavigate();
+    
+    useEffect(() => {
+        if (isLoggedIn) navigate("/");
+    });
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -25,10 +31,7 @@ const Register = ({ isLoggedIn, setIsLoggedIn }) => {
             if (!res.data.success) {
                 setError(res.data.message);
             } else {
-                isAuthenticated()
-                .then(res => {
-                    console.log(res.data);
-                });
+                setIsLoggedIn(true);
             }
         })
         .catch(err => {
