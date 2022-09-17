@@ -20,17 +20,12 @@ const app = express();
 // MIDDLEWARE
 app.use("/public", express.static(process.cwd() + "/public"));
 // Setting up the CORS policy
-app.use((req, res, next) => {
-  const origin = req.get("origin");
-  const allowedOrigins = [/^http:\/\/localhost:\d+/];
-  if (allowedOrigins.some((regex) => regex.test(origin))) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    console.log(origin);
-  }
-
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-});
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true
+  })
+);
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({

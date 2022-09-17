@@ -50,6 +50,7 @@ const Login = ({ isLoggedIn, setIsLoggedIn }) => {
                     <input type="password" name="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
                     <p>Not a volunteer yet? <Link to="/register">Sign Up</Link></p>
                     <input type="submit" value="Login" onClick={handleLogin} />
+                    { error !== "" ? <p className='error'>{error}</p> : "" }
                 </form>
             </div>
         </div>
