@@ -2,30 +2,29 @@
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 
-module.exports = function (app, userCollection) {
+module.exports = function (app, { User }) {
   app.route("/auth").get((req, res) => {
     res.send("Welcome to auth endpoint");
   });
 
   app.route("/auth/register").post(
-    (req, res, next) => {
-      userCollection.findOne(
-        { username: req.body.username },
-        (err, userDoc) => {
-          if (err) return next(err);
-          if (userDoc)
-            return res.json({ success: false, message: "user already exists" });
-          userCollection.insertOne(
-            {
-              username: req.body.username,
-              password: bcrypt.hashSync(req.body.password, 12),
-            },
-            (err, userDoc1) => {
-              next(null, userDoc1.insertedId);
-            }
-          );
+    async (req, res, next) => {
+      try {
+        const doesUserExist = await User.findOne({
+          username: req.body.username,
+        });
+        if (doesUserExist) {
+          return res.json({ success: false, message: "user already exists" });
         }
-      );
+        const newUser = new User({
+          username: req.body.username,
+          password: bcrypt.hashSync(req.body.password, 12),
+        });
+        await newUser.save();
+        next(null, newUser._id);
+      } catch (e) {
+        next(e);
+      }
     },
     passport.authenticate("local", { failureRedirect: "/auth/failureLogin" }),
     (req, res, next) => {
@@ -60,11 +59,11 @@ module.exports = function (app, userCollection) {
   app.route("/auth/isAuthenticated").get((req, res) => {
     if (req.isAuthenticated()) {
       return res.json({
-        isAuthenicated: true,
+        isAuthenticated: true,
       });
     }
     return res.json({
-      isAuthenicated: false,
+      isAuthenticated: false,
     });
   });
 };
