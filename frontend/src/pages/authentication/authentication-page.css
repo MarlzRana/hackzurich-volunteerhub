@@ -37,3 +37,7 @@ form > input[type="password"] {
     font-size: 15px;
 }
 
+.error {
+    color: #f2736b;
+}
+
