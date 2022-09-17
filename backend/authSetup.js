@@ -23,7 +23,6 @@ module.exports = function (app, myDataBase) {
         if (!bcrypt.compareSync(password, userDoc.password)) {
           return done(null, false);
         }
-        console.log(userDoc);
         return done(null, userDoc);
       });
     })

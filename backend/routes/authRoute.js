@@ -27,7 +27,7 @@ module.exports = function (app, userCollection) {
         }
       );
     },
-    passport.authenticate("local", { failureRedirect: "/failureLogin" }),
+    passport.authenticate("local", { failureRedirect: "/auth/failureLogin" }),
     (req, res, next) => {
       return res.json({ success: true, message: "successfully registered" });
     }
@@ -36,7 +36,7 @@ module.exports = function (app, userCollection) {
   app
     .route("/auth/login")
     .post(
-      passport.authenticate("local", { failureRedirect: "/failureLogin" }),
+      passport.authenticate("local", { failureRedirect: "/auth/failureLogin" }),
       (req, res) => {
         res.json({
           success: true,
@@ -45,7 +45,7 @@ module.exports = function (app, userCollection) {
       }
     );
 
-  app.route("failureLogin").get((req, res) => {
+  app.route("/auth/failureLogin").get((req, res) => {
     res.json({ success: false, message: "unsuccessful login" });
   });
 
@@ -57,7 +57,7 @@ module.exports = function (app, userCollection) {
     });
   });
 
-  app.route("/auth/isAuthenicated").get((req, res) => {
+  app.route("/auth/isAuthenticated").get((req, res) => {
     if (req.isAuthenticated()) {
       return res.json({
         isAuthenicated: true,

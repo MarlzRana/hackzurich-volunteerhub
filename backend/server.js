@@ -14,19 +14,23 @@ const defaultRoute = require("./routes/defaultRoute.js");
 const authRoute = require("./routes/authRoute.js");
 const authSetup = require("./authSetup.js");
 
-// ROUTES
-
 // Creating main app object
 const app = express();
 
 // MIDDLEWARE
 app.use("/public", express.static(process.cwd() + "/public"));
 // Setting up the CORS policy
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+app.use((req, res, next) => {
+  const origin = req.get("origin");
+  const allowedOrigins = [/^http:\/\/localhost:\d+/];
+  if (allowedOrigins.some((regex) => regex.test(origin))) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    console.log(origin);
+  }
+
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+});
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
