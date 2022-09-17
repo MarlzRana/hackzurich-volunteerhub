@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./landing-page.css";
 
-const Header = ({ isLoggedIn }) => {
+const Header = ({ isLoggedIn, handleLogout }) => {
     return (
         <div className="landing-header">
             <div className="landing-title">
@@ -19,7 +19,7 @@ const Header = ({ isLoggedIn }) => {
                 <>
                 <p>Welcome back, NAME</p>
                 <Link to="/dashboard">Dashboard</Link>
-                <Link to="/logout">Logout</Link>
+                <Link to="/" onClick={() => handleLogout()}>Logout</Link>
                 </>
                 }
             </div>

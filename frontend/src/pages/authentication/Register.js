@@ -40,6 +40,10 @@ const Register = ({ isLoggedIn, setIsLoggedIn }) => {
         });
     }
 
+    const handleCheckBoxClick = (e) => {
+        console.log(e.target.value);
+    }
+
     return (
         <div className="authentication-page">
             <h1><Link to="/">VolunteerHub</Link></h1>
@@ -49,6 +53,7 @@ const Register = ({ isLoggedIn, setIsLoggedIn }) => {
                     {/* <input type="text" name="organisation" placeholder="Organisation Name" /> */}
                     <input type="text" name="username" placeholder="Username" value={username} onChange={handleUsernameChange} />
                     <input type="password" name="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
+                    Are you an organisation? <input type="checkbox" onChange={handleCheckBoxClick} />
                     <p>Already registered? <Link to="/login">Sign In</Link></p>
                     <input type="submit" value="Login" onClick={handleSignUp} />
                     { error !== "" ? <p className='error'>{error}</p> : "" }

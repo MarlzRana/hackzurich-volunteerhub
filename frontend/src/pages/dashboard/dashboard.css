@@ -28,7 +28,6 @@ html {
     position: fixed;
     bottom: 0;
     left: 0;
-    
 }
 
 .dashboard-footer > div {
@@ -56,6 +55,14 @@ html {
 }
 
 /* OPPORTUNITY */
+
+.opportunities-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 50px;
+}
 
 .opportunity {
     width: 400px;
