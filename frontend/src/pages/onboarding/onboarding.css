@@ -28,7 +28,8 @@
     letter-spacing: 0.1px;
 }
 
-textarea {
+textarea,
+input {
     display: block;
     width: 100%;
     border-radius: 5px;
@@ -36,8 +37,11 @@ textarea {
     margin: 8px 0;
     padding: 9px 15px;
     font-size: 15px;
-    height: 200px;
     font-family: Helvetica;
+}
+
+textarea {
+    height: 200px;
 }
 
 .tag,
@@ -59,6 +63,8 @@ textarea {
 }
 
 .new-tag > input {
+    display: inline-block;
+    margin: 0;
     border-radius: 2px;
     background: #ddd;
     width: 110px;

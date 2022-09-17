@@ -10,6 +10,8 @@ const Register = ({ isLoggedIn, setIsLoggedIn }) => {
         if (isLoggedIn) navigate("/");
     });
 
+    const [isOrganisation, setIsOrganisation] = useState(false);
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -26,12 +28,13 @@ const Register = ({ isLoggedIn, setIsLoggedIn }) => {
 
     const handleSignUp = e => {
         e.preventDefault();
-        register(username, password)
+        register(username, password, isOrganisation ? "organisation" : "volunteer")
         .then(res => {
             if (!res.data.success) {
                 setError(res.data.message);
             } else {
                 setIsLoggedIn(true);
+                isOrganisation ? navigate('/onboarding/charity') : navigate('/organisation/volunteer');
             }
         })
         .catch(err => {
@@ -41,14 +44,14 @@ const Register = ({ isLoggedIn, setIsLoggedIn }) => {
     }
 
     const handleCheckBoxClick = (e) => {
-        console.log(e.target.value);
+        setIsOrganisation(!isOrganisation);
     }
 
     return (
         <div className="authentication-page">
             <h1><Link to="/">VolunteerHub</Link></h1>
             <div className="authentication-form">
-                <p>Register as a volunteer</p>
+                <p>Register as {isOrganisation ? "an organisation" : "a volunteer" }</p>
                 <form>
                     {/* <input type="text" name="organisation" placeholder="Organisation Name" /> */}
                     <input type="text" name="username" placeholder="Username" value={username} onChange={handleUsernameChange} />

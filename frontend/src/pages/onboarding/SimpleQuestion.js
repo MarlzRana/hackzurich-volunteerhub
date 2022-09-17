@@ -1,7 +1,20 @@
-const SimpleQuestion = () => {
+import { useState } from "react";
+
+const SimpleQuestion = ({ name, required, setInputExists, placeholder, setDataToSave }) => {
+    const [userText, setUserText] = useState("");
+
+    const handleTextChange = e => {
+        setUserText(e.target.value);
+        setDataToSave(e.target.value);
+        if (e.target.value !== "" && e.target.value.replace(" ", "") !== "") return setInputExists(true);
+        setInputExists(false);
+    }
+
     return (
         <>
-        "simple question"
+            <h2>{name}</h2>
+            <input placeholder={placeholder} value={userText} onChange={handleTextChange} />
+            { required ? <p>This question is required</p> : <p>This question is optional</p>}
         </>
     );
 }

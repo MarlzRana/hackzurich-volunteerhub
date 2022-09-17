@@ -1,10 +1,11 @@
 import { useState } from "react";
 
-const FullQuestion = ({ name, required, setInputExists, placeholder}) => {
+const FullQuestion = ({ name, required, setInputExists, placeholder, setDataToSave }) => {
     const [userText, setUserText] = useState("");
 
     const handleTextChange = e => {
         setUserText(e.target.value);
+        setDataToSave(e.target.value);
         if (e.target.value !== "" && e.target.value.replace(" ", "") !== "") return setInputExists(true);
         setInputExists(false);
     }

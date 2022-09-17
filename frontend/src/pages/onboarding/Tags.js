@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Tags = ({ name, required, setInputExists}) => {
+const Tags = ({ name, required, setInputExists, setDataToSave }) => {
+
     const [chosenTags, setChosenTags] = useState([]);
 
     const [showNewTag, setShowNewTag] = useState(false);
     const [newTag, setNewTag] = useState("");
+
+    useEffect(() => {
+        setNewTag("");
+        setShowNewTag(false);
+        setChosenTags([]);
+    }, [name]);
 
     // const handleTextChange = e => {
     //     setUserText(e.target.value);
@@ -30,6 +37,7 @@ const Tags = ({ name, required, setInputExists}) => {
         if (e.target.value === "" || e.target.value.replace(" ", "") === "") return;
         if (chosenTags.indexOf(e.target.value) !== -1) return;
         setChosenTags([...chosenTags, e.target.value]);
+        setDataToSave([...chosenTags, e.target.value]);
         setNewTag("");
         setShowNewTag(false);
         setInputExists(true);

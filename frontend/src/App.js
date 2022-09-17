@@ -13,8 +13,11 @@ import { isAuthenticated, logout } from './services/auth.service';
 import Dashboard from './pages/dashboard/Dashboard';
 
 const charityOnboardingQuestions = [
-  {name: "Tell our volunteers a bit about your organisation", type: "full", required: true, placeholder: ""},
-  {name: "What tags would you associate with your organisation? This will help us connect you with volunteers that most fit your organisation.", type: "tags", required: true}
+  {name: "What is the name of your organisation?", type: "simple", required: true, placeholder: "", api: "name"},
+  {name: "Tell our volunteers a bit about your organisation", type: "full", required: true, placeholder: "", api: "bio"},
+  {name: "What tags would you associate with your organisation? This will help us connect you with volunteers that most fit your organisation.", type: "tags", required: true, api: "tags"},
+  {name: "What locations does your organisation work in? This will help us connect you with volunteers in your area. Please enter cities and towns.", type: "tags", required: true, api: "location"},
+  {name: "Do you have a profile picture?", type: "image", required: false, api: "name"},
 ];
 
 const userOnboardingQuestions = [

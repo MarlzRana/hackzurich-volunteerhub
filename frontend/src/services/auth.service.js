@@ -3,8 +3,8 @@ import Axios from "axios";
 const API = "http://localhost:3001";
 Axios.defaults.withCredentials = true;
 
-export const register = (username, password) => {
-    return Axios.post(`${API}/auth/register`, { username, password });
+export const register = (username, password, type) => {
+    return Axios.post(`${API}/auth/register`, { username, password, type });
 }
 
 export const login = (username, password) => {
