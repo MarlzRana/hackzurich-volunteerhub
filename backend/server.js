@@ -53,11 +53,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // MAIN LOGIC
-myDB(async (client) => {
-  const userCollection = await client.db("database").collection("users");
+myDB(async (mongoose) => {
+  const userSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+  });
+  const User = mongoose.model("users", userSchema);
   defaultRoute(app);
-  authRoute(app, userCollection);
-  authSetup(app, userCollection);
+  authRoute(app, { User });
+  authSetup(app, { User });
   // 404 Not Found "Middleware"
   app.use((req, res, next) => {
     res.status(404).type("text").send("Page not found, try again!");
