@@ -12,6 +12,7 @@ const MongoStore = require("connect-mongo");
 const myDB = require("./connection");
 const defaultRoute = require("./routes/defaultRoute.js");
 const authRoute = require("./routes/authRoute.js");
+const volunteerRoute = require("./routes/volunteerRoute.js");
 const authSetup = require("./authSetup.js");
 
 // Creating main app object
@@ -23,7 +24,7 @@ app.use("/public", express.static(process.cwd() + "/public"));
 app.use(
   cors({
     origin: "http://localhost:3000",
-    credentials: true
+    credentials: true,
   })
 );
 app.use(bodyParser.json());
@@ -49,14 +50,46 @@ app.use(passport.session());
 
 // MAIN LOGIC
 myDB(async (mongoose) => {
+  // Database collection schema setup
+  const socialLinksSchema = new mongoose.Schema({
+    instagram: String,
+    twitter: String,
+    linkedin: String,
+  });
   const userSchema = new mongoose.Schema({
-    username: String,
-    password: String,
+    username: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+    bio: String,
+    tags: [String],
+    socialLinks: socialLinksSchema,
+    location: String,
   });
   const User = mongoose.model("users", userSchema);
+
+  //Auth config
+  function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.redirect("/");
+  }
+
+  //Routes
   defaultRoute(app);
   authRoute(app, { User });
+  volunteerRoute(app, ensureAuthenticated, { User });
   authSetup(app, { User });
+
   // 404 Not Found "Middleware"
   app.use((req, res, next) => {
     res.status(404).type("text").send("Page not found, try again!");

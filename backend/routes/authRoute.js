@@ -19,6 +19,7 @@ module.exports = function (app, { User }) {
         const newUser = new User({
           username: req.body.username,
           password: bcrypt.hashSync(req.body.password, 12),
+          type: req.body.type,
         });
         await newUser.save();
         next(null, newUser._id);
