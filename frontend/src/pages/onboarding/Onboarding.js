@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FullQuestion from "./FullQuestion";
 import SimpleQuestion from "./SimpleQuestion";
 import Tags from "./Tags";
 import "./onboarding.css";
+import { useNavigate } from "react-router-dom";
 
-const Onboarding = ({ type, questions }) => {
+const Onboarding = ({ type, questions, isLoggedIn }) => {
+    let navigate = useNavigate();
+    
+    useEffect(() => {
+        if (!isLoggedIn) navigate("/");
+    });
+
     const [currentQuestionNo, setCurrentQuestionNo] = useState(0);
     const [inputExists, setInputExists] = useState(false); // used to enforce required questions
     const finalQuestionNo = questions.length - 1;

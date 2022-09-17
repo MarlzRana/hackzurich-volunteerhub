@@ -59,10 +59,11 @@ module.exports = function (app, { User }) {
   });
 
   app.route("/auth/logout").get((req, res) => {
-    req.logout();
-    res.json({
-      success: true,
-      message: "successful logout",
+    req.logout(() => {
+      res.json({
+        success: true,
+        message: "successful logout",
+      });
     });
   });
 

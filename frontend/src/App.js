@@ -9,7 +9,7 @@ import Login from './pages/authentication/Login';
 import Register from './pages/authentication/Register';
 import Onboarding from './pages/onboarding/Onboarding';
 import { useEffect, useState } from 'react';
-import { isAuthenticated } from './services/auth.service';
+import { isAuthenticated, logout } from './services/auth.service';
 import Dashboard from './pages/dashboard/Dashboard';
 
 const charityOnboardingQuestions = [
@@ -24,6 +24,11 @@ const userOnboardingQuestions = [
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const handleLogout = () => {
+    logout();
+    setIsLoggedIn(false);
+  }
+
   useEffect(() => {
     isAuthenticated()
     .then((res) => {
@@ -34,12 +39,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<LandingPage isLoggedIn={isLoggedIn} />} />
+        <Route index element={<LandingPage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
         <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/register" element={<Register isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/onboarding/user" element={<Onboarding type="user" questions={ userOnboardingQuestions } isLoggedIn={isLoggedIn} />} />
         <Route path="/onboarding/charity" element={<Onboarding type="charity" questions={ charityOnboardingQuestions } isLoggedIn={isLoggedIn} />} />
-        <Route path="/dashboard" element={<Dashboard isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/dashboard/*" element={<Dashboard isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} handleLogout={handleLogout} />} />
       </Routes>
     </BrowserRouter>
   );

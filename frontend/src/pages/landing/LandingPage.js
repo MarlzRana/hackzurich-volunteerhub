@@ -1,10 +1,10 @@
 import Header from './Header';
 import "./landing-page.css";
 
-const LandingPage = ({isLoggedIn}) => {
+const LandingPage = ({isLoggedIn, handleLogout}) => {
     return (
         <>
-            <Header isLoggedIn={isLoggedIn} />
+            <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
             <div className="landing-hero">
                 <div className="landing-hero-left">
                     <h2>Connecting Volunteers With Top-Tier Organisations</h2>
