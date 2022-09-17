@@ -14,6 +14,7 @@ const defaultRoute = require("./routes/defaultRoute.js");
 const authRoute = require("./routes/authRoute.js");
 const volunteerRoute = require("./routes/volunteerRoute.js");
 const organisationRoute = require("./routes/organisationRoute.js");
+const fileRoute = require("./routes/fileRoute.js");
 const authSetup = require("./authSetup.js");
 const { mongo } = require("mongoose");
 const { MongoTopologyClosedError } = require("mongodb");
@@ -77,6 +78,13 @@ myDB(async (mongoose) => {
   const User = mongoose.model("users", userSchema);
 
   //Auth config
+  function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.redirect("/auth/lackPermissions");
+  }
+
   function ensureAuthenticatedVolunteer(req, res, next) {
     if (req.isAuthenticated() && req.user.type === "volunteer") {
       return next();
@@ -96,6 +104,7 @@ myDB(async (mongoose) => {
   authRoute(app, { User });
   volunteerRoute(app, ensureAuthenticatedVolunteer, { User });
   organisationRoute(app, ensureAuthenticatedOrganisation, { User });
+  fileRoute(app, ensureAuthenticated, { File: null });
   authSetup(app, { User });
 
   // 404 Not Found "Middleware"
