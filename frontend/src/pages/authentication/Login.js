@@ -1,7 +1,7 @@
 import "./authentication-page.css";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ isLoggedIn, setIsLoggedIn }) => {
     return (
         <div className="authentication-page">
             <h1><Link to="/">VolunteerHub</Link></h1>

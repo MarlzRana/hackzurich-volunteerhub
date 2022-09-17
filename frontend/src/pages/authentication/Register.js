@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { register, isAuthenticated } from "../../services/auth.service";
 
-const Register = () => {
+const Register = ({ isLoggedIn, setIsLoggedIn }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
