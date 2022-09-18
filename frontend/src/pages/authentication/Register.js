@@ -33,8 +33,10 @@ const Register = ({ isLoggedIn, setIsLoggedIn }) => {
             if (!res.data.success) {
                 setError(res.data.message);
             } else {
+                localStorage.setItem("username", username);
+                localStorage.setItem("accountType", isOrganisation ? "organisation" : "volunteer");
                 setIsLoggedIn(true);
-                isOrganisation ? navigate('/onboarding/charity') : navigate('/organisation/volunteer');
+                isOrganisation ? navigate('/onboarding/charity') : navigate('/onboarding/volunteer');
             }
         })
         .catch(err => {

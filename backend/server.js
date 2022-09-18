@@ -16,6 +16,7 @@ const volunteerRoute = require("./routes/volunteerRoute.js");
 const organisationRoute = require("./routes/organisationRoute.js");
 const fileRoute = require("./routes/fileRoute.js");
 const authSetup = require("./authSetup.js");
+const publicSetup = require("./routes/publicRoutes.js");
 const { mongo } = require("mongoose");
 const { MongoTopologyClosedError } = require("mongodb");
 
@@ -75,7 +76,27 @@ myDB(async (mongoose) => {
     },
     associatedInfo: mongoose.Schema.Types.Mixed,
   });
+  const fileSchema = new mongoose.Schema({
+    fileNameOnBackend: String,
+    mimetype: String,
+    ownerId: mongoose.Types.ObjectId
+  })
+  const advertSchema = new mongoose.Schema({
+    orgUsername: String,
+    title: String,
+    description: String,
+    videoUrl: String
+  })
+  const updateSchema = new mongoose.Schema({
+    orgUsername: String,
+    type: String,
+    title: String,
+    description: String,
+  })
   const User = mongoose.model("users", userSchema);
+  const File = mongoose.model("files", fileSchema);
+  const Advert = mongoose.model("adverts", advertSchema);
+  const Update = mongoose.model("updates", updateSchema);
 
   //Auth config
   function ensureAuthenticated(req, res, next) {
@@ -102,9 +123,10 @@ myDB(async (mongoose) => {
   //Routes
   defaultRoute(app);
   authRoute(app, { User });
-  volunteerRoute(app, ensureAuthenticatedVolunteer, { User });
-  organisationRoute(app, ensureAuthenticatedOrganisation, { User });
-  fileRoute(app, ensureAuthenticated, { File: null });
+  volunteerRoute(app, ensureAuthenticatedVolunteer, { User, Advert });
+  organisationRoute(app, ensureAuthenticatedOrganisation, { User, Advert, Update });
+  fileRoute(app, ensureAuthenticated, { File });
+  publicSetup(app, {Update, User});
   authSetup(app, { User });
 
   // 404 Not Found "Middleware"
@@ -118,7 +140,7 @@ myDB(async (mongoose) => {
 });
 
 // PORT AND LISTEN SETUP
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

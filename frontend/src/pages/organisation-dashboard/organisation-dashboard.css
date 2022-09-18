@@ -1,0 +1,55 @@
+.create-new-update {
+    padding: 0 100px;
+    margin-bottom: 130px;
+}
+
+.create-new-update select {
+    display: block;
+    background: white;
+    padding: 10px 30px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+}
+
+.create-new-update input[type="text"],
+.create-new-update textarea {
+    margin-bottom: 30px;
+}
+
+.create-new-update input[type="file"] {
+    display: block;
+    margin: 5px 0 20px 0;
+}
+
+.dash-update-container {
+    background: white;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    padding: 10px 30px;
+    border-radius: 10px;
+    margin-bottom: 13px;
+}
+
+.dashboard-updates-page {
+    padding: 0 100px;
+}
+
+.dash-update-type {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: #124499;
+}
+
+.dash-update-title {
+    font-size: 22px;
+    color: #111;
+    margin: 0;
+}
+
+.dash-update-description {
+    font-size: 17px;
+    color: #222;
+    margin: 10px 0 0 0;
+}

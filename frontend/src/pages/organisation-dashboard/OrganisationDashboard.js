@@ -1,14 +1,17 @@
-import Footer from "./Footer";
-import Header from "./Header";
-import Profile from "./Profile";
-import "./dashboard.css";
+// import Footer from "./Footer";
+// import Header from "./Header";
+import "../dashboard/dashboard.css";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import Updates from "./Updates";
-import Opportunities from "./Opportunities";
 import { useEffect, useState } from "react";
-import { getVolunteerBio, getVolunteerLocation, getVolunteerSocials, getVolunteerTags } from "../../services/user.service";
+import { getOrganisationBio, getOrganisationLocations, getOrganisationName, getOrganisationTags } from "../../services/user.service";
+import Header from "../dashboard/Header";
+import Footer from "./Footer";
+import Volunteers from "./Volunteers";
+import Profile from "./Profile";
+import Updates from "./Updates";
+import NewUpdate from "./NewUpdate";
 
-const Dashboard = ({ isLoggedIn, setIsLoggedIn, handleLogout }) => {
+const OrganisationDashboard = ({ isLoggedIn, setIsLoggedIn, handleLogout }) => {
     let navigate = useNavigate();
 
     let tempUserData = false;
@@ -17,7 +20,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn, handleLogout }) => {
         tempUserData.username = localStorage.getItem("username");
         tempUserData.bio = localStorage.getItem("bio");
         tempUserData.tags = localStorage.getItem("tags");
-        tempUserData.socials = JSON.parse(localStorage.getItem("socials") || {});
+        tempUserData.socials = localStorage.getItem("socials");
     }
     const [userData, setUserData] = useState(tempUserData);
 
@@ -31,25 +34,25 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn, handleLogout }) => {
         if (localStorage.getItem("bio") === null) {
             // we gotta fetch it!
             
-            getVolunteerBio()
+            getOrganisationName()
             .then(res => {
-                localStorage.setItem("bio", res.data.bio);
-                tempUserData.bio = res.data.bio;
+                localStorage.setItem("name", res.data.name);
+                tempUserData.name = res.data.name;
 
-                getVolunteerTags()
+                getOrganisationBio()
                 .then(res => {
-                    localStorage.setItem("tags", res.data.tags);
-                    tempUserData.tags = localStorage.getItem("tags");
+                    localStorage.setItem("bio", res.data.bio);
+                    tempUserData.bio = localStorage.getItem("bio");
 
-                    getVolunteerLocation()
+                    getOrganisationLocations()
                     .then(res => {
                         localStorage.setItem("location", res.data.location);
                         tempUserData.location = localStorage.getItem("location");
 
-                        getVolunteerSocials()
+                        getOrganisationTags()
                         .then(res => {
-                            localStorage.setItem("socials", JSON.stringify(res.data.socialLinks));
-                            tempUserData.socials = res.data.socialLinks;
+                            localStorage.setItem("tags", res.data.tags);
+                            tempUserData.tags = localStorage.getItem("tags");
                             tempUserData.username = localStorage.getItem("username");
 
                             setUserData(tempUserData);
@@ -64,9 +67,11 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn, handleLogout }) => {
     return (
         <div className="dashboard-container">
             <Header handleLogout={handleLogout} />
+            {/* <Header handleLogout={handleLogout} /> */}
             <Routes>
-                <Route path="feed" element={<Updates />} />
-                <Route path="/" element={<Opportunities />} />
+                <Route path="volunteers" element={<Volunteers />} />
+                <Route path="/" element={<Updates />} />
+                <Route path="new-update" element={<NewUpdate />} />
                 <Route path="profile" element={<Profile userData={userData} setUserData={setUserData} />} />
             </Routes>
             <Footer />
@@ -74,4 +79,4 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn, handleLogout }) => {
     );
 }
 
-export default Dashboard;
+export default OrganisationDashboard;

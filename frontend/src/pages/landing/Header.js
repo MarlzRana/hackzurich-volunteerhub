@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import "./landing-page.css";
 
 const Header = ({ isLoggedIn, handleLogout }) => {
+    const username = localStorage.getItem("username");
+
     return (
         <div className="landing-header">
             <div className="landing-title">
@@ -17,7 +19,7 @@ const Header = ({ isLoggedIn, handleLogout }) => {
                 </>
                 :
                 <>
-                <p>Welcome back, NAME</p>
+                <p>Welcome back, {username}</p>
                 <Link to="/dashboard">Dashboard</Link>
                 <Link to="/" onClick={() => handleLogout()}>Logout</Link>
                 </>

@@ -77,4 +77,13 @@ module.exports = function (app, { User }) {
       isAuthenticated: false,
     });
   });
+
+  app.route("/auth/accountType").get((req, res) => {
+    if (req.isAuthenticated()) {
+      return res.json(req.user.type);
+    }
+    return res.json({
+      isAuthenticated: false,
+    });
+  });
 };

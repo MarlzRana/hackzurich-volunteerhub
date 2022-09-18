@@ -2,6 +2,7 @@ import "./authentication-page.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { login } from "../../services/auth.service";
+import { getAccountType } from "../../services/user.service";
 
 const Login = ({ isLoggedIn, setIsLoggedIn }) => {
     let navigate = useNavigate();
@@ -31,7 +32,12 @@ const Login = ({ isLoggedIn, setIsLoggedIn }) => {
             if (!res.data.success) {
                 setError(res.data.message);
             } else {
-                setIsLoggedIn(true);
+                localStorage.setItem("username", username);
+                getAccountType()
+                .then(res => {
+                    localStorage.setItem("accountType", res.data);
+                    setIsLoggedIn(true);
+                });
             }
         })
         .catch(err => {

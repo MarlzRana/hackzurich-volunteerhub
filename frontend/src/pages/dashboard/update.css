@@ -1,0 +1,55 @@
+.update * {
+    margin: 0;
+    padding: 0;
+}
+
+.update{
+    background-color: white;
+    margin: 10px 20px;
+    padding: 1px 10px;
+    padding-left: 0px;
+    border-radius: 15px;
+    display: flex;
+    height: 200px;
+}
+
+.update > .update-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #171717;
+    border-radius: 15px;
+    margin-right: 5px;
+
+}
+
+.update > .update-left > p{
+    font-size: 1.2em;
+    text-orientation: mixed;
+    writing-mode: vertical-rl;
+    margin-left: 5px;
+    margin-right: 10px;
+    color: white;
+}
+
+.update > .update-right > .update-right-upper {
+    display: flex;
+    height: 10%;
+}
+
+.update > .update-right > .update-right-middle {
+    display: flex;
+    align-items: center;
+    height: 20%;
+}
+
+.update > .update-right > .update-right-middle > p {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.update > .update-right > .update-right-lower {
+    display: flex;
+    height: 70%;
+}
+

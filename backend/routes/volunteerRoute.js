@@ -1,5 +1,5 @@
-module.exports = function (app, ensureIsAuthenticated, { User }) {
-  app.route("/volunteer/allInfo").get(async (req, res) => {
+module.exports = function (app, ensureIsAuthenticated, { User, Advert }) {
+  app.route("/volunteer/allInfo").get(ensureIsAuthenticated, async (req, res) => {
     const userClone = Object.assign({}, req.user._doc);
     delete userClone._id;
     delete userClone.__v;
@@ -92,4 +92,33 @@ module.exports = function (app, ensureIsAuthenticated, { User }) {
         });
       }
     });
+
+    app
+      .route("/ad/forVolunteers")
+      .get(ensureIsAuthenticated, async (req, res) => {
+        const ads = await Advert.find({});
+        return res.json(ads);
+      })
+
+  app
+    .route("/volunteer/subToOrg")
+    .post(ensureIsAuthenticated, async (req, res) => {
+      const orgUsername = req.body.orgUsername;
+      if (!req.user.subbedOrgs){
+        req.user.associatedInfo.subbedOrgs = [req.body.orgUsername]
+      } else {
+        req.user.associatedInfo.subbedOrgs.append(req.body.orgUsername);
+      }
+      req.user.markModified("associatedInfo");
+      try {
+        await req.user.save();
+      } catch(e) {
+        console.error(e);
+        return res.json({
+          success: false,
+          message: "error subscribing user to org"
+        })
+      }
+
+    })
 };
